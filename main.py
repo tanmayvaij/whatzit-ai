@@ -3,11 +3,8 @@ from dotenv import load_dotenv
 from os import getenv
 from typing import List
 
-from prompts import (
-    WELCOME_USER_PROMPT,
-    RANDOM_GENERATION_PROMPT,
-    CUSTOM_GENERATION_PROMPT,
-)
+from prompts import WELCOME_USER_PROMPT, RANDOM_GENERATION_PROMPT
+
 from models import WelcomeResponse, GenerationResponse
 from genai import ask_gemini
 
@@ -38,8 +35,3 @@ def hello():
 )
 def generate(category: str, num: int = 8):
     return ask_gemini(RANDOM_GENERATION_PROMPT.format(num=num, category=category))
-
-
-@app.get("/generate/custom")
-def generate_custom(requirement: str):
-    return ask_gemini(CUSTOM_GENERATION_PROMPT.format(requirement=requirement))

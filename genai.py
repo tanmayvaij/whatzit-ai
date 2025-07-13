@@ -13,8 +13,6 @@ def ask_gemini(prompt: str) -> dict:
             model=getenv("GEMINI_MODEL"), contents=prompt
         )
 
-        print(response.text)
-
         return loads(response.text)
     except HTTPException as e:
         raise HTTPException(500, str(e))
