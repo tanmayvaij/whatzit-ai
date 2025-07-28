@@ -2,11 +2,9 @@ from fastapi import FastAPI
 from dotenv import load_dotenv
 from os import getenv
 from typing import List
-
-from prompts import WELCOME_USER_PROMPT, RANDOM_GENERATION_PROMPT
-
 from models import WelcomeResponse, GenerationResponse
-from genai import ask_gemini
+from agent import Agent
+from json import loads
 
 load_dotenv()
 
@@ -21,11 +19,14 @@ if (GEMINI_MODEL is None) or (GEMINI_API_KEY is None):
 app = FastAPI(title="Whatzit AI")
 
 
+agent = Agent()
+
+
 @app.get(
     "/", response_model=WelcomeResponse, summary="An entry point in the WhatzIt AI"
 )
-def hello():
-    return ask_gemini(WELCOME_USER_PROMPT)
+def welcome_user():
+    return loads(agent.welcome_user())
 
 
 @app.get(
@@ -33,5 +34,5 @@ def hello():
     response_model=List[GenerationResponse],
     summary="Data generation",
 )
-def generate(category: str, num: int = 8):
-    return ask_gemini(RANDOM_GENERATION_PROMPT.format(num=num, category=category))
+def generate_random_json(category: str, num: int = 8):
+    return loads(agent.generate_random_json(num, category))
