@@ -14,6 +14,7 @@ A FastAPI-based web service that generates random structured data using Google's
 
 - **FastAPI** - Modern, fast web framework for building APIs
 - **Google GenAI** - Official Google Generative AI client library
+- **LangChain** - Framework for developing applications powered by language models
 - **Pydantic** - Data validation and settings management
 - **Uvicorn** - ASGI server for production deployment
 - **Python-dotenv** - Environment variable management
@@ -94,7 +95,7 @@ Returns a welcome message from the AI system.
 
 ### 2. Generate Data Endpoint
 
-**GET** `/generate`
+**GET** `/generate/sample`
 
 Generates random objects of a specified category.
 
@@ -104,7 +105,7 @@ Generates random objects of a specified category.
 
 **Example Request:**
 ```
-GET /generate?category=electronics&num=5
+GET /generate/sample?category=electronics&num=5
 ```
 
 **Response:**
@@ -124,21 +125,23 @@ GET /generate?category=electronics&num=5
 ]
 ```
 
+> **Note:** All API responses are strictly valid JSON with no markdown or code blocks, as enforced by the prompt templates.
+
 ## 💡 Usage Examples
 
 ### Generate Electronics
 ```bash
-curl "http://localhost:8000/generate?category=electronics&num=3"
+curl "http://localhost:8000/generate/sample?category=electronics&num=3"
 ```
 
 ### Generate Books
 ```bash
-curl "http://localhost:8000/generate?category=books&num=10"
+curl "http://localhost:8000/generate/sample?category=books&num=10"
 ```
 
 ### Generate Food Items
 ```bash
-curl "http://localhost:8000/generate?category=food&num=5"
+curl "http://localhost:8000/generate/sample?category=food&num=5"
 ```
 
 ### Get Welcome Message
@@ -158,37 +161,19 @@ curl "http://localhost:8000/"
 ```
 whatzit-ai/
 ├── main.py              # Main FastAPI application
+├── agent.py             # Agent logic for interacting with Gemini AI
+├── models.py            # Pydantic models for API responses
+├── prompt_templates.py  # Prompt templates for the AI
 ├── requirements.txt     # Python dependencies
-├── .gitignore          # Git ignore rules
-├── README.md           # This file
-├── venv/               # Virtual environment (not in repo)
-├── __pycache__/        # Python cache (not in repo)
-└── .git/               # Git repository
+├── Dockerfile           # Docker container setup
+├── .gitignore           # Git ignore rules
+├── README.md            # This file
+├── venv/                # Virtual environment (not in repo)
+├── __pycache__/         # Python cache (not in repo)
+└── .git/                # Git repository
 ```
 
 ## 🧪 Testing
 
 You can test the API using:
 - The interactive docs at `/docs`
-- curl commands
-- Any HTTP client (Postman, Insomnia, etc.)
-
-## 🚀 Deployment
-
-### Using Docker (Recommended)
-
-```bash
-docker build -t whatzit-ai .
-docker run -p 8000:8000 --env-file .env whatzit-ai
-```
-
-### Using Gunicorn (Production)
-
-```bash
-pip install gunicorn
-gunicorn main:app -w 4 -k uvicorn.workers.UvicornWorker
-```
-
----
-
-**Made with ❤️ using FastAPI and Google Gemini AI** 
