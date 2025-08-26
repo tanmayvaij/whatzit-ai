@@ -26,7 +26,7 @@ agent = Agent()
     "/", response_model=WelcomeResponse, summary="An entry point in the WhatzIt AI"
 )
 def welcome_user():
-    return loads(agent.welcome_user())
+    return agent.welcome_user()
 
 
 @app.get(
