@@ -15,7 +15,15 @@ class Agent:
         )
 
     def welcome_user(self):
-        return self.llm.with_structured_output(WelcomeResponse).invoke(welcome_user_prompt.format_messages())
+        return self.llm.with_structured_output(
+            WelcomeResponse, method="json_mode"
+        ).invoke(welcome_user_prompt.format_messages())
 
     def generate_random_json(self, num: int, category: str):
-        return self.llm.with_structured_output(GenerationResponse).invoke(random_generation_prompt.format_messages(num=num, category=category))
+        return self.llm.with_structured_output(
+            GenerationResponse, method="json_mode"
+        ).invoke(
+            random_generation_prompt.format_messages(
+                num=num, category=category
+            )
+        )
