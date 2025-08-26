@@ -1,5 +1,6 @@
 from langchain_google_genai import GoogleGenerativeAI
 from prompt_templates import welcome_user_prompt, random_generation_prompt
+from models import WelcomeResponse, GenerationResponse
 from os import getenv
 
 
@@ -13,9 +14,7 @@ class Agent:
         )
 
     def welcome_user(self):
-        return self.llm.invoke(welcome_user_prompt.format())
+        return self.llm.with_structured_output(WelcomeResponse).invoke(welcome_user_prompt.format())
 
     def generate_random_json(self, num: int, category: str):
-        return self.llm.invoke(
-            random_generation_prompt.format(num=num, category=category)
-        )
+        return self.llm.with_structured_output(GenerationResponse).invoke(random_generation_prompt.format(num=num, category=category))
